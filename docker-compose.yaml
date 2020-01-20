@@ -21,8 +21,8 @@ services:
       - ./nginx/ssl.conf:/etc/nginx/ssl.conf
       - ./nginx/certs:/etc/nginx/certs
     ports:
-      - "127.0.0.1:80:80"
-      - "127.0.0.1:443:443"
+      - "80:80"
+      - "443:443"
     environment:
       - FASTCGI_HOST=php-fpm
       - FASTCGI_PORT=9000
@@ -31,8 +31,7 @@ services:
     build: ./php-fpm
     container_name: php-fpm
     environment:
-      XDEBUG_CONFIG: remote_host=${DOCKER_HOST_IP}
-      XDEBUG_ENABLED: 1
+      XDEBUG_CONFIG: "remote_host=host.docker.internal remote_enable=1 remote_autostart=on remote_port=9008 idekey=PHPSTORM remote_connect_back=0"
     volumes:
       - ../:/code
     working_dir: /code/public
